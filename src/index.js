@@ -8,13 +8,15 @@ const app = express();
 const port = 3000;
 // rute tuyến đường
 
-const route= require('./routes');
+const route = require('./routes');
+const db= require('./config/db');
 
+db.connect();
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.urlencoded({
-    extended:true
+    extended: true
 }))
 app.use(express.json());
 
@@ -22,14 +24,14 @@ app.use(express.json());
 app.use(morgan('combined'));
 
 //template engine
-const hbs = handlebars.create({ defaultLayout:'main' });
+const hbs = handlebars.create({ defaultLayout: 'main' });
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 
 
 // app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'resources/views'));
+app.set('views', path.join(__dirname, 'resources','views'));
 // console.log('Path' ,path.join(__dirname, 'resources\\views'))
 
 // route Init
@@ -40,5 +42,5 @@ route(app);
 
 
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(port, () => console.log(`app listening at http://localhost:${port}`))
 
