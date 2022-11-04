@@ -11,6 +11,22 @@ class CourseController {
         )
             .catch(next)
     }
+//    method get gửi yêu cầu lấy về form tạo 
+    create(req, res, next) {
+        res.render('courses/create');
+    }
+    // method post gửi dữ liệu lên server
+    store(req, res, next) {
+        const formData=req.body;
+        formData.image=`https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`;
+        const course= new  Course(formData);
+
+        course.save()
+        .then(()=>res.redirect('/'))
+        .catch(err=>{
+
+        })
+    }
 }
 
 module.exports = new CourseController();
