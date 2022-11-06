@@ -6,6 +6,7 @@ async function connect() {
         await mongoose.connect('mongodb://localhost:27017/coursers_F8', {
             useNewUrlParser: true,
             useUnifiedTopology: true
+            // useCreateIndex: true
         })
         console.log("connect successfully !! ");
 
