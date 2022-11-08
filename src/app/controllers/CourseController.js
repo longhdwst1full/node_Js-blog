@@ -23,7 +23,7 @@ class CourseController {
         course.save()
             .then(() => res.redirect('/me/stored/courses'))
             .catch(err => {
-
+                next(err)
             })
     }
 
@@ -52,8 +52,8 @@ class CourseController {
     // patch : restore cỏurse id
     restore(req, res, next) {
         Course.restore({ _id: req.params.id })
-        .then(() => res.redirect('back'))
-        .catch(err => next(err))
+            .then(() => res.redirect('back'))
+            .catch(err => next(err))
     }
     // delete cỏurse id
     forceDestroy(req, res, next) {
@@ -61,6 +61,20 @@ class CourseController {
             .then(() => res.redirect('back'))
             .catch(err => next(err))
     }
-}
 
+    // handle form submit action: post
+    handleFormAction(req, res, next) {
+        switch (req.body.action) {
+            case 'delete':
+                Course.delete({ _id: { $in: req.body.courseIds } })
+                    .then(() => res.redirect('back'))
+                    .catch(next);
+                break;
+            default:
+                res.json({
+                    message: "Action k hợp lệ"
+                })
+        }
+    }
+}
 module.exports = new CourseController();
