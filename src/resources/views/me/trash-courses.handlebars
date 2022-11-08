@@ -1,8 +1,8 @@
 <div class="mt-4">
-    <h3 class="">Khóa học của tôi</h3>
-    <a href="/me/trash/courses">Thùng rác</a>
+    <h3 class="">Khóa học đã Xóa</h3>
+    <a href="/me/stored/courses">Danh sách khóa học </a>
     <div class="table">
-        <table class="table">
+        <table class="table text-center">
             <thead>
                 <tr>
                     <th scope="col">STT</th>
@@ -20,17 +20,17 @@
                     <td>{{this.level}}</td>
                     <td>{{this.createdAt}}</td>
                     <td>
-                        <a href="/courses/{{this._id}}/edit" class="btn btn-warning">Sửa</a>
+                        <a href="" class="btn btn-warning btn-restore" data-bs-id="{{this._id}}">Khôi phục</a>
                         <a href="" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                            data-bs-id="{{this._id}}">Xóa</a>
+                            data-bs-id="{{this._id}}">Xóa vĩnh viễn</a>
                     </td>
                 </tr>
 
                 {{else}}
                 <tr>
                     <td collapse="5">
-                        Bạn chưa đăng khóa học nào .
-                        <a href="/courses/create">Đăng khóa học</a>
+                        Thùng rác trống
+                        {{!-- <a href="/courses/create">Đăng khóa học</a> --}}
                     </td>
                 </tr>
                 {{/each}}
@@ -41,6 +41,8 @@
 </div>
 
 <form name="delete-course-form" method="POST"></form>
+<form name="restore-course-form" method="POST"></form>
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -50,11 +52,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Bạn có chắc muốn xóa không?
+               Hành động này không thể khôi phục lại khóa hoc. Bạn có chắc chắn muốn xóa nó chứ?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" id="btn-delete-course" class="btn btn-primary">Xóa bỏ</button>
+                <button type="button" id="btn-delete-course" class="btn btn-primary">Xóa bỏ vĩnh viễn</button>
             </div>
         </div>
     </div>
@@ -64,17 +66,37 @@
     document.addEventListener("DOMContentLoaded", () => {
         let courseId;
         let deleteForm = document.forms['delete-course-form']
-        var exampleModal = document.getElementById('exampleModal')
+        let restoreForm = document.forms['restore-course-form']
+        var exampleModal = document.getElementById('exampleModal');
+        let restoreBtn = document.querySelectorAll('.btn-restore');
+
+      //  {{!-- hide model when click --}}
         exampleModal.addEventListener('show.bs.modal', function (event) {
             var button = event.relatedTarget;
             courseId = button.getAttribute('data-bs-id');
             console.log(courseId);
 
         })
+      //  {{!-- when delete courses btn click --}}
         var btnDeleteCourse = document.getElementById("btn-delete-course")
         btnDeleteCourse.onclick = function () {
-            deleteForm.action = '/courses/' + courseId + '?_method=DELETE';
+            deleteForm.action = '/courses/' + courseId + '/force?_method=DELETE';
             deleteForm.submit();
         }
+
+      //  {{!-- when delete courses btn click --}}
+     
+
+  //      {{!-- fillter onclick btn delete --}}
+        restoreBtn.forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                console.log(this)
+                {{!-- let data= this.data('id'); --}}
+                let courseId= this.getAttribute('data-bs-id');
+                restoreForm.action='/courses/' + courseId + '/restore?_method=PATCH';
+          restoreForm.submit();
+            })
+        })
     })
 </script>
