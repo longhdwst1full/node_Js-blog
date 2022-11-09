@@ -16,15 +16,26 @@
         <button class="btn btn-primary btn-check-all-submit btn-sm disabled">Thực hiện</button>
     </div>
 
+    {{!-- {{_sort}} --}}
+
     <div class="table mt-4">
         <table class="table">
             <thead>
                 <tr>
                     <th></th>
                     <th scope="col">STT</th>
-                    <th scope="col">Tên khóa học</th>
-                    <th scope="col">Trình độ</th>
-                    <th scope="col">Thời gian tạo</th>
+                    <th scope="col">
+                        Tên khóa học
+                       {{{sortable 'name' _sort}}}
+                    </th>
+                    <th scope="col">Trình độ
+                       {{{sortable 'level' _sort}}}
+
+                    </th>
+                    <th scope="col">Thời gian tạo
+                       {{{sortable 'createdAt' _sort}}}
+
+                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -133,25 +144,25 @@
         })
 
         //check submit form btn clicked
-     /**   checkAllSubmitBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-           // console.log(checkAllSubmitBtn)
-            let isSubmittable = !checkAllSubmitBtn.classList.contains("disabled");
-        
-           if(isSubmittable){
-            containerForm.submit();
-           }
-        })
-        
-        */
+        /**   checkAllSubmitBtn.addEventListener('click', function (e) {
+               e.preventDefault();
+              // console.log(checkAllSubmitBtn)
+               let isSubmittable = !checkAllSubmitBtn.classList.contains("disabled");
+           
+              if(isSubmittable){
+               containerForm.submit();
+              }
+           })
+           
+           */
         checkAllSubmitBtn.on('submit', function (e) {
-           // console.log(checkAllSubmitBtn)
+            // console.log(checkAllSubmitBtn)
             let isSubmittable = !checkAllSubmitBtn.classList.contains("disabled");
-        
-           if(!isSubmittable){
-                       e.preventDefault();
 
-           }
+            if (!isSubmittable) {
+                e.preventDefault();
+
+            }
         })
 
 
